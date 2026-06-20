@@ -9,10 +9,10 @@
   <img src="https://img.shields.io/badge/RGPD-Conforme-blue?style=for-the-badge" alt="RGPD">
 </p>
 
-<!NOTE>
+[!NOTE]
 > Plateforme média premium moderne et sécurisée, propulsée par un moteur MVC PHP natif performant. Elle intègre un portail abonnés, un espace rédaction collaboratif, une newsletter double opt-in et une sécurité avancée.
 
-<!WARNING>
+[!WARNING]
 > Ce projet est strictement soumis à une licence **propriétaire**. 
 > Tout reproduction, modification, distribution, ou utilisation non autorisée est strictement interdite et susceptible de poursuites judiciaires.
 > L'ANRDI est une personne physique en capacité de saisir les tribunaux compétents en cas de non-respect de la licence. 
