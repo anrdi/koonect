@@ -11,7 +11,7 @@
 
 > [!NOTE]
 > Plateforme média premium moderne et sécurisée, propulsée par un moteur MVC PHP natif performant. Elle intègre un portail abonnés, un espace rédaction collaboratif, une newsletter double opt-in et une sécurité avancée.
-
+---
 > [!CAUTION]
 > Ce projet est strictement soumis à une licence **propriétaire**. 
 > Tout reproduction, modification, distribution, ou utilisation non autorisée est strictement interdite et susceptible de poursuites judiciaires.
