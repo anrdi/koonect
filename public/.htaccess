@@ -1,0 +1,114 @@
+Options -Indexes -MultiViews
+DirectoryIndex index.php
+
+# ── Réécriture URL ────────────────────────────────────────────────
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Redirection www → non-www (anti duplicate content)
+    RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+    RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+    # Forcer HTTPS
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+    # Raccourci /rss → /rss.xml
+    RewriteRule ^rss$ /rss.xml [R=301,L]
+
+    # Ne pas réécrire les fichiers et dossiers existants
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Tout vers index.php
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+
+# ── Sécurité : interdire l'accès aux fichiers sensibles ──────────
+<FilesMatch "(\.env|\.git|composer\.(json|lock)|package\.json|Makefile)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Bloquer l'accès aux dossiers internes
+<IfModule mod_rewrite.c>
+    RewriteRule ^(app|storage|sql|docker)/ - [F,L]
+</IfModule>
+
+# ── Headers de sécurité HTTP ──────────────────────────────────────
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options    "nosniff"
+    Header always set X-Frame-Options           "DENY"
+    Header always set X-XSS-Protection         "1; mode=block"
+    Header always set Referrer-Policy           "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy        "camera=(), microphone=(), geolocation=()"
+
+    # HSTS — forcer HTTPS sur tous les sous-domaines
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+    # Enlever les headers révélateurs
+    Header unset X-Powered-By
+    Header unset Server
+
+    # Vary pour la compression
+    Header append Vary Accept-Encoding
+</IfModule>
+
+# ── Compression GZIP ──────────────────────────────────────────────
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+    AddOutputFilterByType DEFLATE application/javascript application/json
+    AddOutputFilterByType DEFLATE application/xml application/rss+xml application/atom+xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE application/font-woff application/font-woff2
+    AddOutputFilterByType DEFLATE font/woff font/woff2
+</IfModule>
+
+# ── Cache navigateur (assets statiques) ──────────────────────────
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/webp          "access plus 1 year"
+    ExpiresByType image/jpeg          "access plus 1 year"
+    ExpiresByType image/png           "access plus 1 year"
+    ExpiresByType image/svg+xml       "access plus 1 year"
+    ExpiresByType text/css            "access plus 6 months"
+    ExpiresByType application/javascript "access plus 6 months"
+    ExpiresByType application/x-font-woff2 "access plus 1 year"
+    ExpiresByType font/woff2          "access plus 1 year"
+    ExpiresByType font/woff           "access plus 1 year"
+    ExpiresByType text/html           "access plus 0 seconds"
+</IfModule>
+
+# Cache-Control pour les pages dynamiques (HTML)
+<IfModule mod_headers.c>
+    <FilesMatch "\.(html|php)$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+    </FilesMatch>
+    # Assets statiques : immutable si versionnés
+    <FilesMatch "\.(css|js|woff2|woff|svg|png|jpg|jpeg|webp|gif|ico)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+</IfModule>
+
+# ── Protection uploads (interdire exécution) ──────────────────────
+<IfModule mod_rewrite.c>
+    RewriteRule ^storage/uploads/.*\.(php|phtml|php3|php4|php5|php7|phar|pl|py|rb|cgi)$ - [F,L]
+</IfModule>
+<FilesMatch "\.(php|phtml|php3|php4|php5|php7|phar)$">
+    <If "%{REQUEST_URI} =~ m#/storage/uploads/#">
+        Order allow,deny
+        Deny from all
+    </If>
+</FilesMatch>
+
+# ── Charset ───────────────────────────────────────────────────────
+AddDefaultCharset UTF-8
+
+# ── Protection fichiers de configuration ─────────────────────────
+<Files "config.php">
+    Order allow,deny
+    Deny from all
+</Files>
+

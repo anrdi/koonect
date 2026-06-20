@@ -1,0 +1,79 @@
+version: '3.9'
+
+services:
+
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: koonect_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - .:/var/www/koonect:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      - php
+    networks:
+      - koonect_net
+    restart: unless-stopped
+
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: koonect_php
+    volumes:
+      - .:/var/www/koonect
+      - ./storage:/var/www/koonect/storage
+    env_file:
+      - .env
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    networks:
+      - koonect_net
+    restart: unless-stopped
+
+  mariadb:
+    image: mariadb:11.2
+    container_name: koonect_mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS:-root_password_change_me}
+      MYSQL_DATABASE:      ${DB_NAME:-koonect_db}
+      MYSQL_USER:          ${DB_USER:-koonect_user}
+      MYSQL_PASSWORD:      ${DB_PASS:-db_password_change_me}
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./docker/mariadb/my.cnf:/etc/mysql/conf.d/koonect.cnf:ro
+      - ./sql/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      - ./sql/events.sql:/docker-entrypoint-initdb.d/02_events.sql:ro
+      - ./sql/seed.sql:/docker-entrypoint-initdb.d/03_seed.sql:ro
+    ports:
+      - "3306:3306"
+    networks:
+      - koonect_net
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Redis optionnel pour cache (décommenter si souhaité)
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: koonect_redis
+  #   networks:
+  #     - koonect_net
+  #   restart: unless-stopped
+
+volumes:
+  mariadb_data:
+    driver: local
+  nginx_logs:
+    driver: local
+
+networks:
+  koonect_net:
+    driver: bridge

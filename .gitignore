@@ -1,0 +1,64 @@
+# Environment files and configuration
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+/app/config/config.php
+
+
+# Application storage (cache, logs, uploads)
+/storage/cache/*
+!/storage/cache/.gitkeep
+/storage/logs/*
+!/storage/logs/.gitkeep
+/storage/uploads/*
+!/storage/uploads/.gitkeep
+*.log
+.phpunit.result.cache
+
+# Dependencies
+/vendor/
+composer.phar
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# IDEs and editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+
+# Docker local overrides
+docker-compose.override.yml
+
+# Archives and production builds
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+koonect-production-windows.zip
+
+# Temporary / Development debug scripts
+/public/run_shell.php
+/public/print_env.php
+/public/test_smtp.php
+/public/test_smtp_auth.php
+/public/test_smtp_real.php
+/public/check_env.php
+/public/check_file.php
+/public/list_settings.php
+/public/opcache_clear.php
+

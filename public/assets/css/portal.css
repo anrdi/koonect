@@ -1,0 +1,83 @@
+/* ================================================================
+   KOONECT — CSS Portail Abonnés
+   ================================================================ */
+
+/* Layout portail */
+.portal-body { background: #F5F5F5; font-family: 'Inter', system-ui, sans-serif; }
+.portal-header { background: #1A1A1A; color: #fff; padding: 14px 24px; }
+.portal-header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.portal-logo { font-family: 'Playfair Display', serif; text-decoration: none; display: flex; align-items: baseline; gap: 1px; }
+.portal-logo .logo-text { color: #fff; font-size: 1.4rem; font-weight: 900; }
+.portal-logo .logo-dot { color: #C8102E; font-size: 1.4rem; font-weight: 900; }
+.portal-badge { display: inline-block; padding: 2px 8px; background: #C8102E; color: #fff; font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; border-radius: 2px; margin-top: 4px; }
+.portal-nav { display: flex; align-items: center; gap: 16px; margin-left: auto; flex-wrap: wrap; }
+.portal-nav a { color: #ccc; font-size: .83rem; text-decoration: none; transition: 150ms; }
+.portal-nav a:hover { color: #fff; }
+.portal-nav-logout { color: #f87171 !important; }
+
+.portal-main { max-width: 900px; margin: 0 auto; padding: 32px 20px; }
+.portal-footer { border-top: 1px solid #e5e7eb; padding: 16px 24px; font-size: .78rem; color: #9ca3af; display: flex; justify-content: space-between; align-items: center; font-family: 'Inter', sans-serif; max-width: 1200px; margin: 0 auto; gap: 16px; flex-wrap: wrap; }
+.portal-footer a { color: #9ca3af; text-decoration: underline; }
+
+.portal-back-link {
+  display: inline-block;
+  font-family: var(--font-ui, 'Inter', sans-serif);
+  font-size: .78rem;
+  color: #9ca3af;
+  margin-bottom: 20px;
+  text-decoration: underline;
+}
+.portal-back-link:hover { color: #C8102E; }
+
+/* Auth forms */
+.auth-form-wrap { background: #fff; border-radius: 8px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,.08); }
+.auth-form-wrap h1 { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; text-align: center; margin-bottom: 8px; color: #1A1A1A; }
+.auth-form-wrap .subtitle { text-align: center; color: #6b7280; font-size: .88rem; margin-bottom: 28px; font-family: 'Inter', sans-serif; }
+
+/* Form groups portal */
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.form-group label { font-family: 'Inter', sans-serif; font-size: .82rem; font-weight: 600; color: #374151; }
+.form-group input[type=text],
+.form-group input[type=email],
+.form-group input[type=password],
+.form-group input[type=url],
+.form-group textarea,
+.form-group select {
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: .9rem;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  transition: 150ms;
+  width: 100%;
+  color: #1A1A1A;
+}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus { border-color: #0A3D6B; box-shadow: 0 0 0 3px rgba(10,61,107,.08); }
+.form-group input:disabled { background: #f9fafb; color: #9ca3af; cursor: not-allowed; }
+.form-group textarea { resize: vertical; line-height: 1.6; }
+.form-group .helper { font-size: .72rem; color: #9ca3af; line-height: 1.4; }
+
+.form-submit { margin-top: 8px; }
+.form-links { display: flex; justify-content: space-between; font-size: .78rem; flex-wrap: wrap; gap: 8px; margin-top: 16px; font-family: 'Inter', sans-serif; }
+.form-links a { color: #0A3D6B; text-decoration: underline; }
+.form-divider { text-align: center; font-size: .78rem; color: #9ca3af; margin: 16px 0; font-family: 'Inter', sans-serif; position: relative; }
+.form-divider::before, .form-divider::after { content: ''; position: absolute; top: 50%; width: 40%; height: 1px; background: #e5e7eb; }
+.form-divider::before { left: 0; }
+.form-divider::after { right: 0; }
+
+.form-checkbox { display: flex; align-items: flex-start; gap: 10px; font-size: .83rem; line-height: 1.5; font-family: 'Inter', sans-serif; cursor: pointer; }
+.form-checkbox input[type=checkbox] { margin-top: 3px; accent-color: #C8102E; flex-shrink: 0; width: 16px; height: 16px; }
+.form-checkbox a { color: #0A3D6B; text-decoration: underline; }
+
+/* Password strength */
+#password-strength { font-size: .75rem; margin-top: 4px; font-family: 'Inter', sans-serif; min-height: 18px; }
+
+/* Responsive portal */
+@media (max-width: 600px) {
+  .auth-form-wrap { padding: 24px 20px; }
+  .portal-header-inner { flex-wrap: wrap; }
+  .portal-nav { font-size: .78rem; gap: 10px; }
+}
